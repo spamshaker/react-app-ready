@@ -1,4 +1,3 @@
-// Generated using webpack-cli https://github.com/webpack/webpack-cli
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -7,6 +6,8 @@ const isProduction = process.env.NODE_ENV === 'production';
 const isDevelopment = !isProduction;
 const stylesHandler = isProduction ? MiniCssExtractPlugin.loader : 'style-loader';
 const WebpackBar = require('webpackbar');
+const fs = require('fs');
+const host = require('node-fqdn')().toLowerCase() || 'localhost';
 const config = {
   entry: './src/index.tsx',
   output: {
@@ -15,17 +16,23 @@ const config = {
   stats: 'errors-only',
   devServer: {
     open: true,
-    host: 'localhost',
+    host,
     hot: 'only',
-    compress: true,
-    http2: true,
+    // compress: true,
+    // http2: true,
     client: {
-      logging: 'info',
+      logging: 'info'
       // progress: true
     },
     devMiddleware: {
-      index: true,
+      index: true
       // writeToDisk: true
+    },
+    https: {
+      minVersion: 'TLSv1.1',
+      //key: path.join(__dirname, './server.key'),
+      //cert: path.join(__dirname, './server.crt'),
+      //requestCert: true
     }
   },
   target: 'web',
